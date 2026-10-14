@@ -1,0 +1,13 @@
+# Working on Forma
+
+- This repository began empty apart from a placeholder README. The working app is React/Vite + Express, **not** a Base44 SDK application. Use Node 24 for `node:sqlite`.
+- Start with `docker compose -f docker-compose.base44.yml up -d --build`. A one-shot installer runs `npm ci` before both bind-mounted watcher services. Don't install concurrently into the shared dependency volume. Restart Compose after dependency edits; never remove `app_data`.
+- `/api/session` is the read-only health/config endpoint. The Vite web healthcheck also proves `/src/main.jsx` is served; port 3000 must stay on live Vite, not `dist`.
+- Google and Replicate secrets are optional at boot and required for their actual integrations. No placeholder credentials or demo authentication. The Google callback is `${APP_URL}/api/auth/google/callback`; register the current preview origin in Google Cloud. Real Google/Replicate checks are blocked until secrets are supplied.
+- Use `docker compose -f docker-compose.base44.yml exec -T api npm test` for isolated SQLite/mock-provider integration tests. Run the build via `exec -T web npm run build`. Tests create and delete their own `/tmp` directory and never touch live app data.
+- Each generation debit and failed-job refund must stay transactional. Refunds are idempotent; never credit a succeeded job. All history, favorites, media, and usage operations must check ownership. Client-supplied cost/user IDs are never authoritative.
+- Generated files belong in the private media volume, not `public` or repository paths. Replicate output URLs expire; download successful results before displaying them as completed. Provider requests happen only on the server.
+- The poller resumes stored prediction IDs after restart. It intentionally does not resubmit interrupted requests without IDs, because the provider might already have charged them. Single API instance only; coordinate jobs before horizontal scaling.
+- Frontend routes: `/`, `/history`, `/favorites`, `/usage`. Signed-out private routes share the same sign-in card; verify route-specific breadcrumbs/active navigation as well as the card. Anonymous testing cannot prove signed-in favorites or credits work end to end.
+- Inspiration cards are clearly labelled Unsplash reference photographs, not fake generated user records. Never seed another person's dashboard or test paid generation without consent.
+- The only shared sandbox flag behavior is Vite watch polling when `BASE44_PREVIEW_MODE === '1'`; unset retains normal watching. Host extension is through Vite's existing environment variable. See README for setup and production limitations.

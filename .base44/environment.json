@@ -1,0 +1,10 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    { "name": "GOOGLE_CLIENT_ID", "description": "Google Cloud Console > APIs & Services > Credentials > OAuth 2.0 Web application client ID", "requiredAtBoot": false },
+    { "name": "GOOGLE_CLIENT_SECRET", "description": "Client secret for the same Google OAuth Web application", "requiredAtBoot": false },
+    { "name": "REPLICATE_API_TOKEN", "description": "Replicate account > API tokens; requires billing to generate images and videos", "requiredAtBoot": false }
+  ]
+}
