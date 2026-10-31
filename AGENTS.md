@@ -1,6 +1,7 @@
 # Repository notes
 
 - This branch started with only a placeholder README. The homepage is a standalone Arabic RTL Vite app, not an imported framework scaffold or Base44 SDK app.
+- `main` (commit 9088314) still holds only that placeholder README — no `package.json`, `index.html`, or `docker-compose.base44.yml` — so a checkout of `main` has nothing to start and any preview fails immediately. The app lives on feature branches; bring one onto the working branch before running Compose.
 - Run all Node commands in the `web` service of `docker-compose.base44.yml`. Startup installs the committed lockfile before starting the live-source dev server; do not serve `dist/` in the sandbox.
 - No secrets, database, migrations, or auth are needed. Remote fonts/photos need network access.
 - Historical content lives in `src/history.js`; preserve stable IDs because both navigation and story controls use them. Keep card summaries within 30 words. Dates are approximate, with regional differences explained on the page.
